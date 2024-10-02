@@ -1,0 +1,23 @@
+version: '3.4'
+services:
+  rasa:
+    image: rasa/rasa:latest-full
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./models:/app/models
+      - ./config:/app/config
+      - ./data:/app/data
+      - ./domain.yml:/app/domain.yml
+      - ./actions:/app/actions
+    command:
+      - run
+      - --enable-api
+      - --cors "*"
+  action_server:
+    image: rasa/rasa-sdk:latest
+    ports:
+      - "5055:5055"
+    volumes:
+      - ./actions:/app/actions
+    command: rasa_sdk

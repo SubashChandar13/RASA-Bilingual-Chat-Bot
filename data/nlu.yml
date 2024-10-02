@@ -1,0 +1,24 @@
+version: "3.1"
+nlu:
+  - intent: greet
+    examples: |
+      - Hello
+      - Hi
+      - வணக்கம்
+      - காலை வணக்கம்
+      - மாலை வணக்கம்
+
+  - intent: goodbye
+    examples: |
+      - Goodbye
+      - Bye
+      - மீண்டும் சந்திப்போம்
+      - விடைபெறுகிறேன்
+  - intent: ask_customer_query
+    examples: |
+      - What are your store hours?
+      - What is your return policy?
+      - Where are you located?
+      - உங்கள் கடையின் வேலை நேரம் என்ன?
+      - உங்கள் திரும்பப் பெறுதல் கொள்கை என்ன?
+      - நீங்கள் எங்கு இருக்கிறீர்கள்?

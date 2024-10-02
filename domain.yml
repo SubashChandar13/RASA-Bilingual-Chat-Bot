@@ -1,0 +1,24 @@
+version: "3.1"
+intents:
+  - greet
+  - goodbye
+  - ask_weather
+  - ask_customer_query  # Intent for general customer care queries
+actions:
+  - action_handle_customer_query  # Custom action to handle customer queries from CSV
+responses:
+  utter_greet:
+    - text: Hello! How can I help you?
+    - text: வணக்கம்! எப்படி உங்களுக்கு உதவ வேண்டும்?
+  utter_goodbye:
+    - text: Goodbye! Have a nice day!
+    - text: வணக்கம்! நல்ல நாளாக இருக்க வாழ்த்துகள்!
+  utter_ask_weather:
+    - text: The weather today is sunny with a slight chance of rain.
+    - text: இன்றைய வானிலை சூரியனுடன் சிறிய மழை வாய்ப்பு உள்ளது.
+  utter_fallback:
+    - text: "Sorry, I didn't understand that. Could you please rephrase?"
+    - text: "மன்னிக்கவும், எனக்கு அது புரியவில்லை. தயவுசெய்து மீண்டும் எழுத முடியுமா?"
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
