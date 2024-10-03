@@ -6,7 +6,8 @@ import os
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import threading
-from playsound import playsound
+from pydub import AudioSegment
+from pydub.playback import play  # You can also use ffplay directly
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -63,9 +64,13 @@ def speak_response(response_text, lang):
     else:
         tts = gTTS(text=response_text, lang='en')
 
-    # Save and play the audio
-    tts.save("response.mp3")
-    playsound("output.mp3")
+    # Save the audio file
+    audio_file = "response.mp3"
+    tts.save(audio_file)
+
+    # Load and play the audio file using Pydub
+    audio = AudioSegment.from_mp3(audio_file)
+    play(audio)  # Play the audio
 
 @app.route('/select_language', methods=["POST"])
 def select_language():
