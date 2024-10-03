@@ -8,6 +8,9 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import threading
 
+# Set Pygame audio driver to dummy
+os.environ["PYGAME_AUDIODRIVER"] = "dummy"
+
 # Initialize pygame mixer
 pygame.mixer.init()
 
