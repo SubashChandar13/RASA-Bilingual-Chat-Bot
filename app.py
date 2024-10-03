@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Dynamically set the Rasa server URL
-RASA_SERVER_URL = "http://localhost:5005/webhooks/rest/webhook"  # Update with your Rasa server URL
+RASA_SERVER_URL = "https://rasa-bilingual-chat-bot-rasa-server.onrender.com/webhooks/rest/webhook"  # Update with your Rasa server URL
 print(RASA_SERVER_URL)
 
 # Create a lock for thread safety
