@@ -1,6 +1,5 @@
 import speech_recognition as sr
 import requests
-import pyttsx3
 from gtts import gTTS
 import os
 from flask import Flask, request, jsonify, render_template
@@ -16,8 +15,6 @@ CORS(app)  # Enable CORS for all routes
 RASA_SERVER_URL = "http://localhost:5005/webhooks/rest/webhook"  # Update with your Rasa server URL
 print(RASA_SERVER_URL)
 
-# Initialize pyttsx3 for English voice responses
-engine = pyttsx3.init()
 # Create a lock for thread safety
 speak_lock = threading.Lock()
 
@@ -59,6 +56,7 @@ def send_to_rasa(text):
         return None
 
 def speak_response(response_text, lang):
+    # Generate audio using gTTS
     if lang == 'ta':
         tts = gTTS(text=response_text, lang='ta')
     else:
