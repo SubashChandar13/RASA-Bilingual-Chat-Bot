@@ -1,3 +1,4 @@
+import subprocess
 import speech_recognition as sr
 import requests
 from gtts import gTTS
@@ -7,6 +8,7 @@ from flask_cors import CORS
 import threading
 from pydub import AudioSegment
 from pydub.playback import play  # You can also use ffplay directly
+import time
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -15,8 +17,22 @@ CORS(app)  # Enable CORS for all routes
 RASA_SERVER_URL = "http://localhost:5005/webhooks/rest/webhook"  # Update with your Rasa server URL
 print(RASA_SERVER_URL)
 
+# Global variable to hold the Rasa process
+rasa_process = None
+
 # Create a lock for thread safety
 speak_lock = threading.Lock()
+
+def start_rasa():
+    global rasa_process
+    # Start Rasa server in a subprocess
+    rasa_process = subprocess.Popen(
+        ['rasa', 'run', '--enable-api', '--cors', '*', '--model', 'models'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+    # Give Rasa some time to start up
+    time.sleep(10)
 
 def recognize_speech(lang):
     recognizer = sr.Recognizer()
@@ -69,6 +85,14 @@ def speak_response(response_text, lang):
     # Load and play the audio file using Pydub
     audio = AudioSegment.from_mp3(audio_file)
     play(audio)  # Play the audio
+
+@app.route('/start_rasa', methods=["POST"])
+def start_rasa_server():
+    if rasa_process is None:
+        start_rasa()
+        return jsonify({"message": "Rasa server started."}), 200
+    else:
+        return jsonify({"message": "Rasa server is already running."}), 400
 
 @app.route('/select_language', methods=["POST"])
 def select_language():
