@@ -2,17 +2,11 @@ import speech_recognition as sr
 import requests
 import pyttsx3
 from gtts import gTTS
-import pygame
 import os
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import threading
-
-# Set Pygame audio driver to dummy
-os.environ["PYGAME_AUDIODRIVER"] = "dummy"
-
-# Initialize pygame mixer
-pygame.mixer.init()
+from playsound import playsound
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -64,30 +58,14 @@ def send_to_rasa(text):
         return None
 
 def speak_response(response_text, lang):
-    def speak():
-        if lang == 'ta':
-            tts = gTTS(text=response_text, lang='ta')
-            tts.save("response.mp3")
+    if lang == 'ta':
+        tts = gTTS(text=response_text, lang='ta')
+    else:
+        tts = gTTS(text=response_text, lang='en')
 
-            # Play the audio using pygame
-            pygame.mixer.music.load("response.mp3")
-            pygame.mixer.music.play()
-
-            # Wait until the audio finishes playing
-            while pygame.mixer.music.get_busy():
-                pygame.time.Clock().tick(10)  # Ensure it waits until audio is done
-
-            # Clean up
-            pygame.mixer.music.unload()
-            os.remove("response.mp3")
-        else:
-            with speak_lock:  # Use the lock to ensure thread safety
-                engine.say(response_text)
-                engine.runAndWait()
-
-    # Run the speech function in a separate thread
-    speech_thread = threading.Thread(target=speak)
-    speech_thread.start()
+    # Save and play the audio
+    tts.save("response.mp3")
+    playsound("output.mp3")
 
 @app.route('/select_language', methods=["POST"])
 def select_language():
