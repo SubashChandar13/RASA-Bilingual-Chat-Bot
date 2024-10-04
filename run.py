@@ -1,6 +1,6 @@
 import subprocess
 import time
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 
@@ -53,9 +53,7 @@ def stop_rasa():
 
 @app.route('/')  # Serve the main page or a simple message
 def home():
-    return jsonify({"message": "Welcome to the Flask app that manages Rasa servers."}), 200
+    return render_template('rasa.html')  # Render the HTML page
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
-
-

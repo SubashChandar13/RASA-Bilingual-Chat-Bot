@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rasa Server Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .stop-button {
+            background-color: #f44336;
+        }
+        .stop-button:hover {
+            background-color: #e53935;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Manage Rasa Servers</h1>
+
+    <button onclick="startRasa()">Start Rasa Servers</button>
+    <button class="stop-button" onclick="stopRasa()">Stop Rasa Servers</button>
+
+    <div id="message"></div>
+
+    <script>
+        function startRasa() {
+            fetch('/start_rasa', {method: 'POST'})
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').innerHTML = data.message;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function stopRasa() {
+            fetch('/stop_rasa', {method: 'POST'})
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').innerHTML = data.message;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+</body>
+</html>
