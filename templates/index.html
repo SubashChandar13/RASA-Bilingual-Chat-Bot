@@ -138,24 +138,10 @@
     let selectedLanguage = null;
     let langCode = '';
     let lang = '';
-    let ngrokURL = '';  // Variable to store the Ngrok URL
-
-    // Fetch the Ngrok URL on page load
-    window.onload = function() {
-        fetch('http://localhost:5005/get_ngrok_url')
-            .then(response => response.json())
-            .then(data => {
-                ngrokURL = data.ngrok_url;
-                console.log('Ngrok URL:', ngrokURL);
-            })
-            .catch(error => {
-                console.error('Error fetching Ngrok URL:', error);
-            });
-    };
 
     // Select language and send the info to Flask
     function selectLanguage(language) {
-        fetch(`${ngrokURL}/select_language`, {
+        fetch(`/select_language`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -185,7 +171,7 @@
     function sendMessage() {
         const userMessage = document.getElementById('userInput').value;
         if (userMessage && selectedLanguage) {
-            fetch(`${ngrokURL}/send_message`, {
+            fetch(`/send_message`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -210,7 +196,7 @@
 
     // Speech recognition with microphone
     function startListening() {
-        fetch(`${ngrokURL}/recognize_speech`, {
+        fetch(`/recognize_speech`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -224,7 +210,7 @@
             if (data.text) {
                 document.getElementById('chatbox').innerHTML += `<p class="user-message">You said: ${data.text}</p>`;
                 // Automatically send the recognized speech to Rasa
-                fetch(`${ngrokURL}/send_message`, {
+                fetch(`/send_message`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
