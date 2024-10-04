@@ -19,7 +19,7 @@ def start_rasa_api():
     global rasa_api_process
     # Start Rasa API server
     rasa_api_process = subprocess.Popen(["rasa", "run", "--enable-api", "--cors", "*"])
-    time.sleep(30)  # Wait for a few seconds to ensure the Rasa API is up
+    time.sleep(10)  # Wait for a few seconds to ensure the Rasa API is up
     print("Rasa API server started.")
 
 @app.route('/start_rasa', methods=["POST"])
