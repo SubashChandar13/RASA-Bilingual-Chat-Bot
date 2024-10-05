@@ -9,7 +9,7 @@ from pydub import AudioSegment
 from pydub.playback import play  # You can also use ffplay directly
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)  # Enable CORS for all routes....
 
 # Dynamically set the Rasa server URL
 RASA_SERVER_URL = "https://rasa-bilingual-chat-bot-rasa-server.onrender.com/webhooks/rest/webhook"  # Update with your Rasa server URL
