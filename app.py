@@ -115,4 +115,5 @@ def home():
     return render_template('index.html')  # Serve the HTML file
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5001, debug=True) 
+    port = int(os.environ.get('PORT', 5001))  # Use the port assigned by the environment, default to 5001 if not set
+    app.run(host='0.0.0.0', port=port, debug=True)
