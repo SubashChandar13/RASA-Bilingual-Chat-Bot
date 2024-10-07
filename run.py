@@ -1,6 +1,7 @@
 import subprocess
 import time
 import os
+import requests  # Import requests library
 from flask import Flask, jsonify, render_template
 from flask_cors import CORS
 
@@ -70,10 +71,22 @@ def stop_rasa():
 
     return jsonify({"message": "Rasa servers stopped successfully."}), 200
 
+@app.route('/check_rasa', methods=["GET"])  # Health check endpoint
+def check_rasa():
+    try:
+        # Check if Rasa API is running
+        response = requests.get("http://localhost:5005/status")
+        if response.status_code == 200:
+            return jsonify({"message": "Rasa API is running", "status": response.json()}), 200
+        else:
+            return jsonify({"message": "Rasa API is not running", "status_code": response.status_code}), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({"message": "Error checking Rasa API status", "error": str(e)}), 500
+
 @app.route('/')  # Serve the main page or a simple message
 def home():
     return render_template('rasa.html')  # Render the HTML page
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))  # Use the port assigned by Render
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True) 
